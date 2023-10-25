@@ -4,6 +4,7 @@ from jinja2 import TemplateNotFound
 auth = Blueprint("auth", __name__)
 
 
+@auth.route("/sign-in", methods=["GET", "POST"])
 @auth.route("/", methods=["GET", "POST"])
 def sign_in():
     if request.method == "POST":

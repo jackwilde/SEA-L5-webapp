@@ -1,0 +1,30 @@
+#sign-in {
+    max-width: 500px;
+    width: 80%;
+}
+
+input.sign-in {
+    padding: 10px;
+}
+
+#sign-up {
+    max-width: 700px;
+    width: 80%;
+}
+
+input.sign-up {
+    padding: 10px;
+}
+
+a {
+    text-decoration: none;
+}
+
+#first_name, #password1{
+    margin-right: 5px;
+}
+
+#last_name, #password2 {
+    margin-left: 5px;
+}
+
