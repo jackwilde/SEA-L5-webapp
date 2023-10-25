@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In{% endblock %}
+
+{% block content %}
+    <div class="container w-50 text-center border rounded mt-5 p-5 shadow">
+{#        <p class="fs-1 pb-2 fw-bold">Sign in</p>#}
+{#        <p class="fs-3">to continue</p>#}
+        <form method="POST" class="fs-3 mb-4">
+            <div class="form-group pb-3">
+                <label for="email"><strong>Email Address</strong></label>
+                <input type="email" class="form-control" id="email" name="email"
+                       aria-describedby="emailHelp" placeholder="Enter email">
+            </div>
+            <div class="form-group pb-3">
+                <label for="exampleInputPassword1"><strong>Password</strong></label>
+                <input type="password" class="form-control" id="password" name="password"
+                       placeholder="Password">
+            </div>
+            <div>
+                <button type="sign-in" class="btn btn-primary fs-5 mt-2">Sign In</button>
+            </div>
+        </form>
+        <a class="fs-5 fw-bold" href="sign-up">Create account</a>
+    </div>
+{% endblock %}

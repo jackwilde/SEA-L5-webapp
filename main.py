@@ -1,11 +1,4 @@
-from flask import Flask
-from blueprints import blueprints
-
-app = Flask(__name__)
-app.config["SECRET_KEY"] = "79zMopyNtucBbkv3Y3ZvFFHUnzJTVNHH"
-app.register_blueprint(blueprint=blueprints,
-                       url_prefix="/")
-
+from app import app
 
 
 if __name__ == '__main__':
