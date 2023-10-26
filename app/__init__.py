@@ -20,7 +20,7 @@ app.config["SECRET_KEY"] = "79zMopyNtucBbkv3Y3ZvFFHUnzJTVNHH"
 app.register_blueprint(blueprint=auth, url_prefix="/")
 app.register_blueprint(blueprint=views, url_prefix="/")
 
-# app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{BASEDIR}/{DB_NAME}"
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{BASEDIR}/{DB_NAME}"
 
 db.init_app(app)
 
