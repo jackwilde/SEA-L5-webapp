@@ -74,7 +74,11 @@ def create_account():
 
             flash(message="Account created!",
                   category="success")
+
+            user = User.query.filter_by(email=email).first()
             login_user(user, remember=True)
+
+
             return redirect(url_for("views.home"))
             # return redirect(url_for("auth.sign_in"))
 
