@@ -1,5 +1,0 @@
-werkzeug==2.3.7
-Flask
-Flask-Login
-Flask-SQLAlchemy
-Jinja2
