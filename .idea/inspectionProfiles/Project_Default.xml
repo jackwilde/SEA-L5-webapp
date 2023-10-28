@@ -4,7 +4,7 @@
     <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredPackages">
         <value>
-          <list size="30">
+          <list size="64">
             <item index="0" class="java.lang.String" itemvalue="rsa" />
             <item index="1" class="java.lang.String" itemvalue="PyYAML" />
             <item index="2" class="java.lang.String" itemvalue="SQLAlchemy" />
@@ -35,6 +35,40 @@
             <item index="27" class="java.lang.String" itemvalue="typing_extensions" />
             <item index="28" class="java.lang.String" itemvalue="PyMySQL" />
             <item index="29" class="java.lang.String" itemvalue="idna" />
+            <item index="30" class="java.lang.String" itemvalue="alembic" />
+            <item index="31" class="java.lang.String" itemvalue="lazy" />
+            <item index="32" class="java.lang.String" itemvalue="python-dateutil" />
+            <item index="33" class="java.lang.String" itemvalue="Flask-DebugToolbar" />
+            <item index="34" class="java.lang.String" itemvalue="httplib2" />
+            <item index="35" class="java.lang.String" itemvalue="Flask-OAuth" />
+            <item index="36" class="java.lang.String" itemvalue="MarkupSafe" />
+            <item index="37" class="java.lang.String" itemvalue="requests" />
+            <item index="38" class="java.lang.String" itemvalue="oauth2" />
+            <item index="39" class="java.lang.String" itemvalue="python-editor" />
+            <item index="40" class="java.lang.String" itemvalue="Jinja2" />
+            <item index="41" class="java.lang.String" itemvalue="Flask-Login" />
+            <item index="42" class="java.lang.String" itemvalue="requests-oauthlib" />
+            <item index="43" class="java.lang.String" itemvalue="Flask-Dance" />
+            <item index="44" class="java.lang.String" itemvalue="Flask-OAuthlib" />
+            <item index="45" class="java.lang.String" itemvalue="certifi" />
+            <item index="46" class="java.lang.String" itemvalue="oauthlib" />
+            <item index="47" class="java.lang.String" itemvalue="Flask-Bcrypt" />
+            <item index="48" class="java.lang.String" itemvalue="SQLAlchemy-Utils" />
+            <item index="49" class="java.lang.String" itemvalue="urllib3" />
+            <item index="50" class="java.lang.String" itemvalue="itsdangerous" />
+            <item index="51" class="java.lang.String" itemvalue="Flask" />
+            <item index="52" class="java.lang.String" itemvalue="blinker" />
+            <item index="53" class="java.lang.String" itemvalue="wincertstore" />
+            <item index="54" class="java.lang.String" itemvalue="Werkzeug" />
+            <item index="55" class="java.lang.String" itemvalue="Flask-WTF" />
+            <item index="56" class="java.lang.String" itemvalue="Flask-SQLAlchemy" />
+            <item index="57" class="java.lang.String" itemvalue="chardet" />
+            <item index="58" class="java.lang.String" itemvalue="WTForms" />
+            <item index="59" class="java.lang.String" itemvalue="Flask-Mail" />
+            <item index="60" class="java.lang.String" itemvalue="Flask-Migrate" />
+            <item index="61" class="java.lang.String" itemvalue="URLObject" />
+            <item index="62" class="java.lang.String" itemvalue="Mako" />
+            <item index="63" class="java.lang.String" itemvalue="Pillow" />
           </list>
         </value>
       </option>
