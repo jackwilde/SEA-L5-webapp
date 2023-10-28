@@ -1,31 +1,26 @@
-from fastapi import FastAPI, Request, Form
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.templating import Jinja2Templates
-from validation import validate_sign_up
-from ux import display_alert
+from fastapi import Request, Form, Depends
+from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy.orm import Session
+from typing import Annotated
+from validation import validate_sign_up
+from models import User
+from database import get_db
+import crud
+from database import create_db
+from werkzeug.security import generate_password_hash
 
-import crud, models
-from database import SessionLocal, engine
-
-# Create DB
-models.Base.metadata.create_all(bind=engine)
-
-# DB Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
+create_db()
 app = FastAPI()
-
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
+
+
+@app.get("/test")
+async def read_all(db: Annotated[Session, Depends(get_db)]):
+    return crud.get_user_by_email(db, email="jack.wilde@uwe.ac.uk")
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -51,22 +46,32 @@ async def sign_in(request: Request):
     return templates.TemplateResponse("sign-up.html", {"request": request})
 
 
-@app.post("/sign-up", response_class=RedirectResponse)
+@app.post(path="/sign-up", response_class=RedirectResponse)
 async def sign_up(request: Request,
+                  db: Annotated[Session, Depends(get_db)],
                   first_name: str = Form(default=None),
                   last_name: str = Form(default=None),
                   email: str = Form(default=None),
                   password1: str = Form(default=None),
                   password2: str = Form(default=None)):
 
-
+    email = email.lower()
     error = validate_sign_up(first_name=first_name,
                              last_name=last_name,
                              email=email,
                              password1=password1,
                              password2=password2)
+
+    # If any errors detected then display to user
     if error:
         return templates.TemplateResponse(
             "sign-up.html", {"request": request, "error": error})
+    # Else create user account
     else:
-        return RedirectResponse("/home", status_code=303)
+        password = generate_password_hash(password1, method="scrypt")
+        user = User(first_name=first_name, last_name=last_name,
+                    email=email, password=password)
+        db.add(user)
+        db.commit()
+        # TODO Login user
+        return RedirectResponse("/", status_code=303)

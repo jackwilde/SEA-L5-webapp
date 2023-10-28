@@ -1,24 +1,20 @@
-# from pydantic import BaseModel, EmailStr, SecretStr
 import re
-
-# class SignUp(BaseModel):
-#
-#     first_name: str
-#     last_name: str
-#     email: EmailStr
-#     password1: SecretStr
-#     password2: SecretStr
+from typing import Annotated
+from fastapi import Depends
+from sqlalchemy.orm import Session
+from database import get_db
 
 
-def validate_sign_up(first_name, last_name, email, password1, password2):
+def validate_sign_up(db: Annotated[Session, Depends(get_db)],
+                     first_name, last_name, email, password1, password2):
     """Will return an error message if an error is found else
     returns None"""
     message = None
-
-    # if user:
-    #     flash(message=f"Account already exists for {email}",
-    #           category="error")
-    if not first_name:
+    # Check if user exists and then validate input
+    user = crud.get_user_by_email(db, email=email)
+    if user:
+        message = f"Account already exists for {email}"
+    elif not first_name:
         message = "First name is required"
     elif not last_name:
         message = "Last name is required"
@@ -42,11 +38,10 @@ def validate_email(email):
     else:
         return False
 
+
 def check_password_strength(password):
     password_match_pattern = r"^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[^a-zA-Z\d\s]).{12,}$"
     if re.match(password_match_pattern, password):
         return True
     else:
         return False
-
-
