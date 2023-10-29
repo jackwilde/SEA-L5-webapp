@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from database import get_db
-
+import crud
 
 def validate_sign_up(db: Annotated[Session, Depends(get_db)],
                      first_name, last_name, email, password1, password2):
