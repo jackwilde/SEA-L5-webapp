@@ -5,6 +5,23 @@ from sqlalchemy.orm import Session
 from database import get_db
 import crud
 
+from werkzeug.security import check_password_hash
+
+def validate_email(email):
+    email_match_pattern = r"^\S+@\S+\.\S+$"
+    if re.match(email_match_pattern, email):
+        return True
+    else:
+        return False
+
+
+def check_password_strength(password):
+    password_match_pattern = r"^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[^a-zA-Z\d\s]).{12,}$"
+    if re.match(password_match_pattern, password):
+        return True
+    else:
+        return False
+
 def validate_sign_up(db: Annotated[Session, Depends(get_db)],
                      first_name, last_name, email, password1, password2):
     """Will return an error message if an error is found else
@@ -30,18 +47,19 @@ def validate_sign_up(db: Annotated[Session, Depends(get_db)],
     else:
         return None
 
-
-def validate_email(email):
-    email_match_pattern = r"^\S+@\S+\.\S+$"
-    if re.match(email_match_pattern, email):
-        return True
+def validate_password(db: Annotated[Session, Depends(get_db)],
+                     email, password):
+    user = crud.get_user_by_email(db, email=email)
+    result = {}
+    if user:
+        if check_password_hash(user.password, password):
+            result["status"] = "success"
+            result["message"] = "Sign in successful"
+        else:
+            result["status"] = "error"
+            result["message"] = "Incorrect password"
     else:
-        return False
+        result["status"] = "error"
+        result["message"] = f"Account does not exist for {email}"
 
-
-def check_password_strength(password):
-    password_match_pattern = r"^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[^a-zA-Z\d\s]).{12,}$"
-    if re.match(password_match_pattern, password):
-        return True
-    else:
-        return False
+    return result

@@ -4,8 +4,8 @@ import models
 
 
 def get_user_by_email(db: Session, email: str):
-    return db.query(models.User).filter(models.User.email == email).first()
-
+    user = db.query(models.User).filter(models.User.email == email).first()
+    return user
 
 def create_user(db: Session, user: models.User):
     password_hash = generate_password_hash(user.password, method="scrypt")
