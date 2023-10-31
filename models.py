@@ -11,7 +11,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.Text)
     role = db.Column(db.String(20))
 
-    def __init__(self, first_name, last_name, email, password, role="Standard"):
+    def __init__(self, first_name, last_name, email, password, role="standard"):
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
@@ -20,3 +20,12 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f"{self.email}"
+
+
+class Training(db.Model):
+    __tablename__ = "training"
+    id =  db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
+    course_name = db.Column(db.String(100))
+
+
