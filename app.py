@@ -1,9 +1,7 @@
 from flask import Flask
-from flask_login import LoginManager
 from blueprint.auth import auth, login_manager
 from blueprint.views import views
 from database import db, SQLALCHEMY_DATABASE_URI
-from models import User
 
 
 # App config
@@ -24,6 +22,3 @@ def create_database():
 
 
 login_manager.init_app(app)
-
-
-

@@ -1,6 +1,7 @@
-from app import create_app
+from app import app, create_database
 
-app = create_app()
+create_database()
 
 if __name__ == '__main__':
+
     app.run()
