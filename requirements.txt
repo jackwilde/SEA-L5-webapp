@@ -1,8 +1,6 @@
 werkzeug==2.3.7
 Flask~=2.3.3
 Flask-Login
-Flask-SQLAlchemy
 Jinja2
-
-SQLAlchemy~=2.0.22
-mysqlclient~=2.2.0
+SQLAlchemy
+psycopg2
