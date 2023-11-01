@@ -15,7 +15,7 @@ login_manager.login_view = "auth.sign_in"
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return crud.get_user_by_id(user_id)
 
 
 @auth.route("/sign-in", methods=["GET", "POST"])
