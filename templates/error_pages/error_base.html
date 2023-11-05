@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div id="error_alert" class="container alert alert-danger mt-5 text-center shadow py-5 w-50" role="alert">
+        <h1 class="alert-heading display-1">
+            {% block error_code %}Error Code{% endblock %}
+        </h1>
+        <p class="fs-3">
+            {% block error_message %}
+                Error Message
+            {% endblock %}
+        </p>
+    </div>
+{% endblock %}

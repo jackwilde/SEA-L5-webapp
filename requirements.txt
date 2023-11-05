@@ -1,5 +1,5 @@
-werkzeug==2.3.7
-Flask~=2.3.3
+werkzeug
+Flask
 Flask-Login
 Jinja2
 SQLAlchemy

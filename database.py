@@ -9,7 +9,6 @@ DB_HOST = getenv("DB_HOST")
 DB_NAME = getenv("DB_NAME")
 
 # Create database
-# SQLALCHEMY_DATABASE_URL = "sqlite:///data.db"
 SQLALCHEMY_DATABASE_URL = \
     f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
 

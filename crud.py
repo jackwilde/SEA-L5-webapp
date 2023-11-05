@@ -19,7 +19,7 @@ def get_user_by_id(user_id):
 
 def create_user(first_name, last_name, email, password):
     s = Session()
-    password_hash = generate_password_hash(password, method="sha256")
+    password_hash = generate_password_hash(password, method="scrypt")
     user = User(first_name=first_name, last_name=last_name,
                 email=email, password=password_hash)
     s.add(user)
