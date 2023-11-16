@@ -1,27 +1,29 @@
 {% extends "base.html" %}
 
-{% block title %}Sign Up{% endblock %}
+{% block title %}
+    Sign Up
+{% endblock %}
 
 {% block content %}
     <div class="container border rounded mt-5 p-5 shadow text-center" id="sign-up">
         <h1 class="mb-3 display-6">Create an account</h1>
         <form method="POST" class="mb-4">
             <div class="form-group d-flex w-100">
-{#                    <label for="first_name">First Name</label>#}
+                <label for="first_name" class="visually-hidden">First Name</label>
                 <input type="text" class="form-control mb-3 sign-up" id="first_name" name="first_name"
                        placeholder="First Name">
-{#                    <label for="last_name">Last Name</label>#}
+                <label for="last_name" class="visually-hidden">Last Name</label>
                 <input type="text" class="form-control mb-3 sign-up" id="last_name" name="last_name"
                        placeholder="Last Name">
             </div>
-{#                <label for="email">Email</label>#}
+            <label for="email" class="visually-hidden">Email</label>
             <input type="email" class="form-control mb-3 sign-up" id="email" name="email"
                    placeholder="Email">
             <div class="form-group d-flex w-100">
-{#                    <label for="password1"></label>#}
+                <label for="password1" class="visually-hidden"></label>
                 <input type="password" class="form-control mb-3 sign-up" id="password1" name="password1"
                        placeholder="Password">
-{#                    <label for="password2"></label>#}
+                <label for="password2" class="visually-hidden"></label>
                 <input type="password" class="form-control mb-3 sign-up" id="password2" name="password2"
                        placeholder="Confirm Password">
             </div>

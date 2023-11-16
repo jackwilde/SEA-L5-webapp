@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Add Training
+{% endblock %}
+
+{% block content %}
+    <div class="container rounded mt-5 p-5 text-center" id="add-training">
+        <h1 class="mb-3 display-6">Add training</h1>
+        <form method="POST" class="mb-4">
+                <label for="course_name" class="visually-hidden">Course name</label>
+                <input type="text" class="form-control mb-3 sign-up" id="course_name" name="course_name"
+                       placeholder="Course name">
+                <label for="category" class="visually-hidden">Course category</label>
+                <select class="form-select form-select-lg mb-3 fs-6" name="category" id="category">
+                    <option selected>Select category</option>
+                    {% for category in categories %}
+                        <option value={{ category.id }}>{{ category.category_name }}</option>
+                    {% endfor %}
+                </select>
+            <label for="date_completed" class="visually-hidden">Date completed</label>
+            <input type="date" class="form-control mb-3 sign-up" id="date_completed" name="date_completed">
+            <label class="form-check-label" for="certification">Certification</label>
+            <input class="form-check-input" type="checkbox" value="True" id="certification" name="certification">
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary fs-6 mt-3">Submit</button>
+            </div>
+        </form>
+{% endblock %}

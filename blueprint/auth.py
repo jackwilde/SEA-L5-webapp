@@ -4,7 +4,6 @@ from flask_login import (login_user, login_required, logout_user, current_user,
                          LoginManager)
 import crud
 from validation import validate_sign_up, validate_password
-from models import User
 
 auth = Blueprint("auth", __name__)
 

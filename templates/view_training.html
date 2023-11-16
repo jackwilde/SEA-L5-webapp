@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Training
+{% endblock %}
+
+{% block content %}
+    {% if training|length == 0 %}
+    <div class="container mt-5 w-75 text-center">
+        <h1 class="fw-semibold fs-3">You haven't added any training yet</h1>
+        <a class="fw-bold fs-5" href="/training/add">Click here to add some</a>
+    </div>
+    {% else %}
+        <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Course Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Date Completed</th>
+            <th scope="col">Certification</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for course in training %}
+                <tr>
+                    <td>{{ course.course_name }}</td>
+                    <td>{{ course.category_name }}</td>
+                    <td>{{ course.date_completed }}</td>
+                    <td>{{ course.certification }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

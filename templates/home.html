@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}
+    Home
+{% endblock %}
 
 
 {% block content %}
-    <div class="container mt-4 w-75">
-        <h1>Hello {{ user.first_name }}</h1>
-        <button type="button" class="btn btn-primary btn-lg">View training</button>
-        <button type="button" class="btn btn-primary btn-lg">Add new</button>
+    <div class="container mt-5 w-75 text-center">
+        <h1 class="fw-semibold">Welcome {{ user.first_name }}!</h1>
+        <p class="fs-4 fw-light">What would you like to do?</p>
+    </div>
+    <div class="container mt-4 text-center">
+        <a href="/training/view"><button type="button" class="btn btn-primary btn-lg mx-1">View my training</button></a>
+        <a href="/training/add"><button type="button" class="btn btn-primary btn-lg mx-1">Add new training</button></a>
     </div>
 {% endblock %}
