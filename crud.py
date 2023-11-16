@@ -44,14 +44,19 @@ def get_training_categories():
 
 
 def get_training_by_user(user):
-    s = Session()
-    stmt = (
-        select([Training.course_name, TrainingCategory.category_name, Training.date_completed, Training.certification])
-        .join(TrainingCategory, Training.category_id == TrainingCategory.id)
-        .filter(Training.user_id == 1)
-    )
-    user_training = s.execute(stmt).scalars().all()
-    s.close()
+    with Session() as s:
+        s.add(user)
+        stmt = (
+            select(Training.course_name,
+                   TrainingCategory.category_name,
+                   Training.date_completed,
+                   Training.certification
+            )
+            .join(TrainingCategory)
+            .filter(User.id == user.id)
+        )
+        user_training = s.execute(stmt).all()
+
     return user_training
 
 

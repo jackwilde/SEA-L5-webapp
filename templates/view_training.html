@@ -11,25 +11,36 @@
         <a class="fw-bold fs-5" href="/training/add">Click here to add some</a>
     </div>
     {% else %}
-        <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Course Name</th>
-            <th scope="col">Category</th>
-            <th scope="col">Date Completed</th>
-            <th scope="col">Certification</th>
-        </tr>
-        </thead>
-        <tbody>
-            {% for course in training %}
-                <tr>
-                    <td>{{ course.course_name }}</td>
-                    <td>{{ course.category_name }}</td>
-                    <td>{{ course.date_completed }}</td>
-                    <td>{{ course.certification }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-        </table>
+        <div class="container mt-5">
+            <h1 class="fw-semibold fs-2">
+                Training for {{ current_user.first_name }} {{ current_user.last_name }}
+            </h1>
+            <table class="table table-striped shadow rounded mt-3">
+            <thead>
+            <tr class="table-dark">
+                <th scope="col">Course Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">Date Completed</th>
+                <th scope="col">Certification</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for course in training %}
+                    <tr>
+                        <td class="align-middle">{{ course.course_name }}</td>
+                        <td class="align-middle">{{ course.category_name }}</td>
+                        <td class="align-middle">{{ course.date_completed }}</td>
+                        <td class="fs-4 align-middle">
+                            {% if course.certification == True %}
+                                &check;
+                             {% else %}
+                                &cross;
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
     {% endif %}
 {% endblock %}

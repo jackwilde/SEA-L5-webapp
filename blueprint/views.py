@@ -21,9 +21,6 @@ def training():
 @login_required
 def view_training():
     user_training = crud.get_training_by_user(current_user)
-    print(user_training)
-    for i in user_training:
-        print(i)
     return render_template("view_training.html",
                            training=user_training)
 
