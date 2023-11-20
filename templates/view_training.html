@@ -15,13 +15,14 @@
             <h1 class="fw-semibold fs-2">
                 Training for {{ current_user.first_name }} {{ current_user.last_name }}
             </h1>
-            <table class="table table-striped shadow rounded mt-3">
+            <table class="table table-striped shadow mt-3">
             <thead>
             <tr class="table-dark">
                 <th scope="col">Course Name</th>
                 <th scope="col">Category</th>
                 <th scope="col">Date Completed</th>
                 <th scope="col">Certification</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -37,10 +38,38 @@
                                 &cross;
                             {% endif %}
                         </td>
+                    <td class="align-middle">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target='#edit{{ course.id }}'>
+                            Edit
+                        </button>
+                    </td>
                     </tr>
+                    <!-- Modal -->
+                    <div class="modal modal-lg fade" id="edit{{ course.id }}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="ModalLabel">Edit Training</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body container p-5">
+                                    {% set form_id = course.id %}
+                                    {% include "user_training_form.html" %}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" form="{{ form_id }}" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
             </tbody>
             </table>
+            <div class="container mt-4 text-center">
+                <a href="/training/add"><button type="button" class="btn btn-primary btn-lg mx-1">Add new training</button></a>
+            </div>
         </div>
     {% endif %}
+
 {% endblock %}

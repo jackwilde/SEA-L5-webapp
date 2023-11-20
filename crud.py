@@ -1,5 +1,5 @@
 from sqlalchemy.orm import load_only
-from sqlalchemy import select
+from sqlalchemy import select, update
 from werkzeug.security import generate_password_hash
 from models import User, Training, TrainingCategory
 from database import Session
@@ -36,24 +36,21 @@ def get_training_categories():
     training_categories = (s.query(TrainingCategory).all())
     return training_categories
 
-# def get_training_category_by_id(category_id):
-#     s = Session()
-#     category = s.query(TrainingCategory).filter(TrainingCategory.id == category_id)
-#     s.close()
-#     return category.category_name
-
 
 def get_training_by_user(user):
     with Session() as s:
         s.add(user)
         stmt = (
-            select(Training.course_name,
+            select(Training.id,
+                   Training.course_name,
+                   Training.category_id,
                    TrainingCategory.category_name,
                    Training.date_completed,
                    Training.certification
             )
             .join(TrainingCategory)
             .filter(User.id == user.id)
+            .order_by(Training.date_completed)
         )
         user_training = s.execute(stmt).all()
 
@@ -71,5 +68,21 @@ def create_training(user_id, course_name, course_category, date_completed,
     s.add(training)
     s.commit()
     s.refresh(training)
+    s.close()
+    return 0
+
+
+def update_training(training_id, user_id, course_name, course_category,
+                    date_completed, certification):
+    s = Session()
+    stmt = (update(Training)
+            .where(Training.id == training_id)
+            .values(user_id=user_id,
+                    course_name=course_name,
+                    category_id=course_category,
+                    date_completed=date_completed,
+                    certification=certification))
+    s.execute(stmt)
+    s.commit()
     s.close()
     return 0
