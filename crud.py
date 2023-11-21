@@ -39,6 +39,7 @@ def get_training_categories():
 
 def get_training_by_user(user):
     with Session() as s:
+        print(user.id)
         s.add(user)
         stmt = (
             select(Training.id,
@@ -49,7 +50,7 @@ def get_training_by_user(user):
                    Training.certification
             )
             .join(TrainingCategory)
-            .filter(User.id == user.id)
+            .where(Training.user_id == user.id)
             .order_by(Training.date_completed)
         )
         user_training = s.execute(stmt).all()
