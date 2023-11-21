@@ -5,32 +5,14 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container border rounded mt-5 p-5 shadow text-center" id="sign-up">
-        <h1 class="mb-3 display-6">Create an account</h1>
-        <form method="POST" class="mb-4" id="user-training-form">
-            <div class="form-group d-flex w-100">
-                <label for="first_name" class="visually-hidden">First Name</label>
-                <input type="text" class="form-control mb-3 sign-up" id="first_name" name="first_name"
-                       placeholder="First Name">
-                <label for="last_name" class="visually-hidden">Last Name</label>
-                <input type="text" class="form-control mb-3 sign-up" id="last_name" name="last_name"
-                       placeholder="Last Name">
-            </div>
-            <label for="email" class="visually-hidden">Email</label>
-            <input type="email" class="form-control mb-3 sign-up" id="email" name="email"
-                   placeholder="Email">
-            <div class="form-group d-flex w-100">
-                <label for="password1" class="visually-hidden"></label>
-                <input type="password" class="form-control mb-3 sign-up" id="password1" name="password1"
-                       placeholder="Password">
-                <label for="password2" class="visually-hidden"></label>
-                <input type="password" class="form-control mb-3 sign-up" id="password2" name="password2"
-                       placeholder="Confirm Password">
-            </div>
-            <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary fs-6">Sign up</button>
-            </div>
-        </form>
-        <a class="fw-bold" href="sign-in">Already have an account? Sign in here.</a>
+    <div class="container border rounded mt-5 p-5 shadow" id="sign-up">
+        <h1 class="mb-3 display-6 text-center">Create an account</h1>
+        {% set form_id = "sign_up" %}
+        {% include "user_form.html" %}
+        <div class="text-center">
+            <button type="submit" form="sign_up" class="btn btn-primary fs-6 mb-3">Sign up</button>
+            <br>
+            <a class="fw-bold" href="sign-in">Already have an account? Sign in here.</a>
+        </div>
     </div>
 {% endblock %}

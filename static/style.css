@@ -8,24 +8,12 @@ input.sign-in {
 }
 
 #sign-up {
-    max-width: 700px;
+    max-width: 800px;
     width: 80%;
-}
-
-input.sign-up {
-    padding: 10px;
 }
 
 a {
     text-decoration: none;
-}
-
-#first_name, #password1{
-    margin-right: 5px;
-}
-
-#last_name, #password2 {
-    margin-left: 5px;
 }
 
 #add-training {

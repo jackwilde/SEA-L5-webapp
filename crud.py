@@ -18,6 +18,17 @@ def get_user_by_id(user_id):
     s.close()
     return user
 
+def get_all_users():
+    with Session() as s:
+        stmt = select(User.id,
+                      User.first_name,
+                      User.last_name,
+                      User.email,
+                      User.admin).order_by(User.id)
+        all_users = s.execute(stmt).all()
+
+    return all_users
+
 
 def create_user(first_name, last_name, email, password):
     s = Session()
@@ -33,13 +44,19 @@ def create_user(first_name, last_name, email, password):
 
 def get_training_categories():
     s = Session()
-    training_categories = (s.query(TrainingCategory).all())
+    training_categories = s.query(TrainingCategory).all()
     return training_categories
 
 
+def get_training_by_id(training_id):
+    with Session() as s:
+        stmt = select(Training).where(Training.id == training_id)
+        training = s.execute(stmt).first()[0]
+
+    return training
+
 def get_training_by_user(user):
     with Session() as s:
-        print(user.id)
         s.add(user)
         stmt = (
             select(Training.id,
