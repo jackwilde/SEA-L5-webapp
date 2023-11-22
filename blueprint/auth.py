@@ -20,7 +20,7 @@ def load_user(user_id):
 @auth.route("/sign-in", methods=["GET", "POST"])
 def sign_in():
     if current_user.is_authenticated:
-        return redirect(url_for("views.home"))
+        return redirect(url_for("views.training"))
     elif request.method == "POST":
         email = request.form.get("email").lower()
         password = request.form.get("password")
@@ -28,7 +28,7 @@ def sign_in():
         if user:
             flash(message="Sign in successful!", category="success")
             login_user(user, remember=True)
-            return redirect(url_for("views.home"))
+            return redirect(url_for("views.training"))
         else:
             flash(message="Email or password incorrect", category="error")
         return render_template("sign-in.html")
@@ -39,7 +39,7 @@ def sign_in():
 @auth.route("/sign-up", methods=["GET", "POST"])
 def create_account():
     if current_user.is_authenticated:
-        return redirect(url_for("views.home"))
+        return redirect(url_for("views.training"))
     if request.method == "POST":
         first_name = request.form.get("first_name")
         last_name = request.form.get("last_name")
@@ -56,7 +56,7 @@ def create_account():
                                     email=email, password=password1)
             login_user(user, remember=True)
 
-            return redirect(url_for("views.home"))
+            return redirect(url_for("views.training"))
 
     return render_template("sign-up.html")
 

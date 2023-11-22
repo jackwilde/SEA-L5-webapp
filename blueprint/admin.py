@@ -19,13 +19,12 @@ def admin_users():
     if not current_user.admin:
         return render_template("error_pages/403.html"), 403
     elif request.method == "POST":
-        print(request.from_values())
+        print(request.form.to_dict())
         return redirect(url_for("admin.admin_users"))
-
     else:
         all_users = crud.get_all_users()
-        return render_template("admin_users.html",
-                               all_users=all_users, current_user=current_user)
+        return render_template("admin_users.html", all_users=all_users,
+                               current_user=current_user)
 
 
 @admin.route("/training")

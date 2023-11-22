@@ -19,23 +19,12 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-2">
             <div class="container">
-                <span class="navbar-brand fs-2">myTraining</span>
+                <a class="nav-link fs-5 mx-1" href="/">
+                    <span class="navbar-brand fs-2">myTraining</span>
+                </a>
             {% if current_user.is_authenticated %}
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link fs-5 mx-1" href="/">Home</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link fs-5 mx-1" href="#" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                Training
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item fs-6" href="/training/view">View</a></li>
-                                <li><a class="dropdown-item fs-6" href="/training/add">Add</a></li>
-                            </ul>
-                        </li>
                         {% if current_user.admin %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link fs-5 mx-1" href="#" role="button"
