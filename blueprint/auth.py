@@ -1,5 +1,4 @@
-from flask import (Blueprint, render_template, request, redirect, url_for,
-                   flash)
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import (login_user, login_required, logout_user, current_user,
                          LoginManager)
 import crud
@@ -14,7 +13,8 @@ login_manager.login_view = "auth.sign_in"
 
 @login_manager.user_loader
 def load_user(user_id):
-    return crud.get_user_by_id(user_id)
+    user = crud.get_user_by_id(user_id)
+    return user
 
 
 @auth.route("/sign-in", methods=["GET", "POST"])

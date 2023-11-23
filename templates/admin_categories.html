@@ -5,5 +5,187 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Admin Categories</h1>
+    <div class="container mt-5">
+        <h1 class="display-6">
+            Training Categories
+        </h1>
+        <table class="table table-striped shadow mt-3">
+            <thead>
+            <tr class="table-dark">
+                <th scope="col">ID</th>
+                <th scope="col">Category_name</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for category in all_categories %}
+                <tr>
+                    <td class="align-middle">{{ category.id }}</td>
+                    <td class="align-middle">{{ category.category_name }}</td>
+                    <td class="align-middle">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target='#edit{{ category.id }}'>
+                            Edit
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+                <!-- Modal -->
+                <div class="modal modal-lg fade" id="edit{{ user.id }}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title display-6" id="ModalLabel">Edit Category</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body container p-5">
+                                {% set form_id = "edit-category" + category.id|string %}
+                                {% include "user_form.html" %}
+                                <!-- Delete Button -->
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target='#delete{{ user.id }}'>
+                                    Delete User
+                                </button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" form="{{ form_id }}" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Delete Modal -->
+                <div class="modal modal-md fade" id="delete{{ user.id }}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title display-6" id="ModalLabel">Confirm</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body container p-5">
+                                {% set form_id = "delete-user" + user.id|string %}
+                                <form method="POST" class="visually-hidden" id={{ form_id }}>
+                                    <label for="form_id" class="visually-hidden">Form ID</label>
+                                    <input type="text" class="form-control visually-hidden" id="form_id" name="form_id" value={{ form_id }} readonly>
+                                    <label for="user_id" class="visually-hidden">User ID</label>
+                                    <input type="text" class="form-control visually-hidden" id="user_id" name="user_id" value={{ user.id }} readonly>
+                                </form>
+                                <p>Are you sure you want to delete account for {{ user.first_name }} {{ user.last_name }}?<br>
+                                    This will also delete any training they have logged.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" form="{{ form_id }}" class="btn btn-danger">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </table>
+        <div class="container mt-4 text-center">
+            <button type="button" class="btn btn-primary btn-lg mx-1" data-bs-toggle="modal" data-bs-target='#add_new_user'>
+                Add new user
+            </button>
+            <div class="modal modal-lg fade" id="add_new_user" tabindex="-1" aria-labelledby="AddModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title display-6" id="AddModalLabel">Add User</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body container p-5">
+                            {% set form_id = "add-user" %}
+                            {% include "user_form.html" %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" form="{{ form_id }}" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
+
+
+
+{#<div class="container mt-5">#}
+{#    <h1 class="display-6">#}
+{#        Training Categories#}
+{#    </h1>#}
+{#    <table class="table table table-striped shadow mt-3 w-50">#}
+{#        <thead>#}
+{#        <tr class="table-dark">#}
+{#            <th scope="col">Category ID</th>#}
+{#            <th scope="col">Category Name</th>#}
+{#            <th scope="col"></th>#}
+{#        </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+{#        {% for category in all_categories %}#}
+{#            <tr>#}
+{#                <td>{{ category.id }}</td>#}
+{#                <td>{{ category.category_name }}</td>#}
+{#                <td class="align-middle">#}
+{#                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target='#edit{{ user.id }}'>#}
+{#                        Edit#}
+{#                    </button>#}
+{#                    <button type="button" class="btn btn-success">#}
+{#                        View#}
+{#                    </button>#}
+{#                </td>#}
+{#            </tr>#}
+{#            </tbody>#}
+{##}
+{#            </table>#}
+{##}
+{#            <!-- Modal -->#}
+{#            <div class="modal modal-lg fade" id="edit{{ user.id }}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">#}
+{#                <div class="modal-dialog">#}
+{#                    <div class="modal-content">#}
+{#                        <div class="modal-header">#}
+{#                            <h1 class="modal-title display-6" id="ModalLabel">Edit User</h1>#}
+{#                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>#}
+{#                        </div>#}
+{#                        <div class="modal-body container p-5">#}
+{#                            {% set form_id = "edit-user" + user.id|string %}#}
+{#                            {% include "user_form.html" %}#}
+{#                            <!-- Delete Button -->#}
+{#                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target='#delete{{ user.id }}'>#}
+{#                                Delete User#}
+{#                            </button>#}
+{#                        </div>#}
+{#                        <div class="modal-footer">#}
+{#                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>#}
+{#                            <button type="submit" form="{{ form_id }}" class="btn btn-primary">Save changes</button>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <!-- Delete Modal -->#}
+{#            <div class="modal modal-md fade" id="delete{{ user.id }}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">#}
+{#                <div class="modal-dialog">#}
+{#                    <div class="modal-content">#}
+{#                        <div class="modal-header">#}
+{#                            <h1 class="modal-title display-6" id="ModalLabel">Confirm</h1>#}
+{#                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>#}
+{#                        </div>#}
+{#                        <div class="modal-body container p-5">#}
+{#                            {% set form_id = "delete-user" + user.id|string %}#}
+{#                            <form method="POST" class="visually-hidden" id={{ form_id }}>#}
+{#                                <label for="form_id" class="visually-hidden">Form ID</label>#}
+{#                                <input type="text" class="form-control visually-hidden" id="form_id" name="form_id" value={{ form_id }} readonly>#}
+{#                                <label for="user_id" class="visually-hidden">User ID</label>#}
+{#                                <input type="text" class="form-control visually-hidden" id="user_id" name="user_id" value={{ user.id }} readonly>#}
+{#                            </form>#}
+{#                            <p>Are you sure you want to delete account for {{ user.first_name }} {{ user.last_name }}?<br>#}
+{#                                This will also delete any training they have logged.</p>#}
+{#                        </div>#}
+{#                        <div class="modal-footer">#}
+{#                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>#}
+{#                            <button type="submit" form="{{ form_id }}" class="btn btn-danger">Confirm</button>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    </table>#}

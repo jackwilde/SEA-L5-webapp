@@ -1,4 +1,6 @@
 <form method="POST" class="mb-4" id="{{ form_id }}">
+    <label for="form_id" class="visually-hidden">Form ID</label>
+    <input type="text" class="form-control visually-hidden" id="form_id" name="form_id" value={{ form_id }} readonly>
     {% if user %}
         <label for="user_id" class="visually-hidden">user_id</label>
         <input type="text" class="form-control visually-hidden" id="user_id" name="user_id" value={{ user.id }} readonly>
@@ -6,8 +8,6 @@
     <div class="row mb-3">
         <label for="first_name" class="col-sm-2 col-form-label fw-semibold fs-6 text-left">First Name</label>
         <input type="text" class="form-control col" id="first_name" name="first_name" {% if user %}value="{{ user.first_name }}"{% endif %} placeholder="First Name">
-{#    </div>#}
-{#    <div class="row mb-3">#}
         <label for="last_name" class="col-sm-2 col-form-label fw-semibold fs-6 text-left">Last Name</label>
         <input type="text" class="form-control col" id="last_name" name="last_name" {% if user %}value="{{ user.last_name }}"{% endif %} placeholder="Last Name">
     </div>

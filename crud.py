@@ -1,22 +1,25 @@
-from sqlalchemy.orm import load_only
-from sqlalchemy import select, update
+from sqlalchemy import select, update, delete
 from werkzeug.security import generate_password_hash
 from models import User, Training, TrainingCategory
 from database import Session
+from os import getenv
 
 
 def get_user_by_email(email):
-    s = Session()
-    user = s.query(User).filter(User.email == email).first()
-    s.close()
-    return user
+    with Session() as s:
+        stmt = select(User).where(User.email == email)
+        user = s.execute(stmt).first()
+        if user:
+            return user[0]
 
 
 def get_user_by_id(user_id):
-    s = Session()
-    user = s.query(User).filter(User.id == user_id).first()
-    s.close()
-    return user
+    with Session() as s:
+        stmt = select(User).where(User.id == user_id)
+        user = s.execute(stmt).first()
+        if user:
+            return user[0]
+
 
 def get_all_users():
     with Session() as s:
@@ -30,46 +33,85 @@ def get_all_users():
     return all_users
 
 
-def create_user(first_name, last_name, email, password):
-    s = Session()
-    password_hash = generate_password_hash(password, method="scrypt")
-    user = User(first_name=first_name, last_name=last_name,
-                email=email, password=password_hash)
-    s.add(user)
-    s.commit()
-    s.refresh(user)
-    s.close()
+def create_user(first_name, last_name, email, password, admin=False):
+    with Session() as s:
+        password_hash = generate_password_hash(password, method="scrypt")
+        user = User(first_name=first_name, last_name=last_name,
+                    email=email, password=password_hash, admin=admin)
+        s.add(user)
+        s.commit()
+        s.refresh(user)
     return user
 
 
-def get_training_categories():
+def update_user(user_id, first_name, last_name, email, admin,):
     s = Session()
-    training_categories = s.query(TrainingCategory).all()
+    stmt = (update(User)
+            .where(User.id == user_id)
+            .values(first_name=first_name,
+                    last_name=last_name,
+                    email=email,
+                    admin=admin))
+    s.execute(stmt)
+    s.commit()
+    s.close()
+    return 0
+
+
+def delete_user(user_id):
+    # First delete user's training records
+    with Session() as s:
+        stmt = delete(Training).where(Training.user_id == user_id)
+        s.execute(stmt)
+        s.commit()
+    # Finally delete user
+    with Session() as s:
+        stmt = delete(User).where(User.id == user_id)
+        s.execute(stmt)
+        s.commit()
+    return 0
+
+
+def get_training_categories():
+    with Session() as s:
+        stmt = select(
+            TrainingCategory.id, TrainingCategory.category_name
+        ).order_by(TrainingCategory.category_name)
+        training_categories = s.execute(stmt).all()
     return training_categories
+
+
+def create_training_category(training_category):
+    with Session() as s:
+        category = TrainingCategory(category_name=training_category)
+        s.add(category)
+        s.commit()
+        s.refresh(category)
+    return 0
 
 
 def get_training_by_id(training_id):
     with Session() as s:
         stmt = select(Training).where(Training.id == training_id)
-        training = s.execute(stmt).first()[0]
+        training = s.execute(stmt).first()
+        if training:
+            return training[0]
 
-    return training
 
 def get_training_by_user(user):
     with Session() as s:
-        s.add(user)
         stmt = (
-            select(Training.id,
-                   Training.course_name,
-                   Training.category_id,
-                   TrainingCategory.category_name,
-                   Training.date_completed,
-                   Training.certification
-            )
-            .join(TrainingCategory)
+            select(
+                Training.id,
+                Training.course_name,
+                Training.category_id,
+                TrainingCategory.category_name,
+                Training.date_completed,
+                Training.certification
+            ).join(TrainingCategory)
             .where(Training.user_id == user.id)
             .order_by(Training.date_completed)
-        )
+            )
         user_training = s.execute(stmt).all()
 
     return user_training
@@ -77,16 +119,15 @@ def get_training_by_user(user):
 
 def create_training(user_id, course_name, course_category, date_completed,
                     certification):
-    s = Session()
-    training = Training(user_id=user_id,
-                        course_name=course_name,
-                        category_id=course_category,
-                        date_completed=date_completed,
-                        certification=certification)
-    s.add(training)
-    s.commit()
-    s.refresh(training)
-    s.close()
+    with Session() as s:
+        training = Training(user_id=user_id,
+                            course_name=course_name,
+                            category_id=course_category,
+                            date_completed=date_completed,
+                            certification=certification)
+        s.add(training)
+        s.commit()
+        s.refresh(training)
     return 0
 
 
@@ -104,3 +145,30 @@ def update_training(training_id, user_id, course_name, course_category,
     s.commit()
     s.close()
     return 0
+
+
+# If no users create first admin
+if not get_all_users():
+    create_user(
+        first_name=getenv("ADMIN_FIRST_NAME"),
+        last_name=getenv("ADMIN_LAST_NAME"),
+        email=getenv("ADMIN_EMAIL"),
+        password=getenv("ADMIN_PASSWORD"),
+        admin=True
+    )
+
+
+# If no training categories then create them
+if not get_training_categories():
+    category_list = [
+        "Cloud Computing",
+        "Cyber Security",
+        "Data Management",
+        "Development",
+        "Networking",
+        "Project Management"
+    ]
+    for category in category_list:
+        create_training_category(category)
+
+
