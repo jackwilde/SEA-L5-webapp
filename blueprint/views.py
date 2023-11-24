@@ -51,4 +51,5 @@ def training():
         user_training = crud.get_training_by_user(current_user)
         return render_template("training.html",
                                training=user_training,
-                               categories=crud.get_training_categories())
+                               all_categories=crud.get_training_categories(),
+                               user=current_user)

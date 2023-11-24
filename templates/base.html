@@ -34,7 +34,16 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item fs-6" href="/admin/users">Users</a></li>
                                     <li><a class="dropdown-item fs-6" href="/admin/training">Training</a></li>
-                                    <li><a class="dropdown-item fs-6" href="/admin/categories">Categories</a></li>
+                                    <li>
+                                        <a class="dropdown-item fs-6 dropdown-toggle" href="#">Categories</a>
+                                        <ul class="dropdown-menu dropdown-submenu">
+                                            {% for category in all_categories %}
+                                            <li>
+                                                <a class="dropdown-item" href="#">{{ category.category_name }}</a>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
                                 </ul>
                             </li>
                         {% endif %}

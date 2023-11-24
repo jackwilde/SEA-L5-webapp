@@ -19,6 +19,9 @@ class User(Base, UserMixin):
 
     trainings = relationship('Training', back_populates='user')
 
+    def __repr__(self):
+        return str(self.id)
+
 class TrainingCategory(Base):
     __tablename__ = 'training_categories'
 

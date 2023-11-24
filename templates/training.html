@@ -7,11 +7,11 @@
 {% block content %}
     {% if training|length == 0 %}
     <div class="container mt-5 w-75 text-center">
-        <h1 class="fw-semibold fs-3">You haven't added any training yet</h1>
+        <h1 class="display-6">No training has been added for {{ user.first_name }} {{ user.last_name }}</h1>
     {% else %}
         <div class="container mt-5">
             <h1 class="display-6 mb-2">
-                Training for {{ current_user.first_name }} {{ current_user.last_name }}
+                Training for {{ user.first_name }} {{ user.last_name }}
             </h1>
             <table class="table table-striped shadow mt-3">
             <thead>

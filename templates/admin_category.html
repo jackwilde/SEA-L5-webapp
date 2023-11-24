@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Admin - Categories
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="display-6 mb-3">
+            Training Categories
+        </h1>
+        <h2 class="fw-light fs-4 mb-3">
+            Click a category to view training logged under it.
+        </h2>
+        {% for category in all_categories %}
+            <h3 class="fw-semibold fs-4">{{ category.category_name }}</h3>
+        {% endfor %}
+    </div>
+{% endblock %}

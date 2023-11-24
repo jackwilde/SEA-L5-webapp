@@ -5,6 +5,7 @@ import crud
 
 admin = Blueprint("admin", __name__)
 
+ALL_CATEGORIES = crud.get_training_categories()
 
 @admin.route("/users", methods=["GET", "POST"])
 @login_required
@@ -72,28 +73,57 @@ def admin_users():
             else:
                 crud.delete_user(user_id=user_to_delete)
             return redirect(url_for("admin.admin_users"))
+        # If Add view user clicked
+        elif request.form.get("form_id").startswith("view"):
+            user_id = int(request.form.get("user_id"))
+            return redirect(url_for("admin.admin_training", user=user_id))
+            # user = crud.get_user_by_id(user_id)
+            # user_training = crud.get_training_by_user(user)
+            # return render_template("training.html",
+            #                        training=user_training,
+            #                        all_categories=ALL_CATEGORIES,
+            #                        user=user)
         else:
             print(request.form.get("form_id"))
             return redirect(url_for("admin.admin_users"))
     else:
         all_users = crud.get_all_users()
         return render_template("admin_users.html", all_users=all_users,
-                               current_user=current_user)
+                               current_user=current_user,
+                               all_categories=ALL_CATEGORIES)
 
 
-@admin.route("/training")
+@admin.route("/training", methods=["GET", "POST"])
 @login_required
 def admin_training():
     if not current_user.admin:
         return render_template("error_pages/403.html"), 403
-    return render_template("admin_training.html", user=current_user)
+    elif request.method == "POST":
+        print(request.data)
+        return redirect(url_for("admin.admin_training"))
+    else:
+        user_id = request.args.get("user")
+        if not user_id:
+            print("No user specified")
+            all_training = crud.get_all_training()
+            return render_template("admin_training.html",
+                                   training=all_training,
+                                   all_categories=ALL_CATEGORIES)
+        else:
+            print(f"User {user_id} named")
+            user_id = int(user_id)
+            user = crud.get_user_by_id(user_id)
+            user_training = crud.get_training_by_user(user)
+            return render_template("admin_training.html",
+                                   training=user_training,
+                                   all_categories=ALL_CATEGORIES,
+                                   user=user)
 
 
-@admin.route("/categories")
+@admin.route("/category", methods=["GET", "POST"])
 @login_required
 def admin_categories():
     if not current_user.admin:
         return render_template("error_pages/403.html"), 403
-    all_categories = crud.get_training_categories()
-    return render_template("admin_categories.html", user=current_user,
-                           all_categories=all_categories)
+    return render_template("admin_category.html", user=current_user,
+                           all_categories=ALL_CATEGORIES)

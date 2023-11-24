@@ -15,7 +15,7 @@
                 {% if not course %}
                     <option selected>Select category</option>
                 {% endif %}
-                {% for category in categories %}
+                {% for category in all_categories %}
                     <option value={{ category.id }} {% if course and course.category_id == category.id %}selected{% endif %}>{{ category.category_name }}</option>
                 {% endfor %}
             </select>

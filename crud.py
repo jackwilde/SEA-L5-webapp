@@ -90,6 +90,29 @@ def create_training_category(training_category):
     return 0
 
 
+def get_all_training():
+    with Session() as s:
+        stmt = (
+            select(
+                Training.id,
+                User.id,
+                User.first_name,
+                User.last_name,
+                Training.course_name,
+                Training.category_id,
+                TrainingCategory.category_name,
+                Training.date_completed,
+                Training.certification
+            ).join(TrainingCategory)
+            .join(User)
+            .order_by(Training.user_id)
+            .order_by(Training.course_name)
+        )
+        all_training = s.execute(stmt).all()
+
+    return all_training
+
+
 def get_training_by_id(training_id):
     with Session() as s:
         stmt = select(Training).where(Training.id == training_id)

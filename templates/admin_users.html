@@ -17,11 +17,11 @@
             <table class="table table-striped shadow mt-3">
                 <thead>
                 <tr class="table-dark">
-                    <th scope="col">User ID</th>
-                    <th scope="col">Full Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Admin</th>
-                    <th scope="col"></th>
+                    <th scope="col" class="w-auto">User ID</th>
+                    <th scope="col" class="w-auto">Full Name</th>
+                    <th scope="col" class="w-auto">Email</th>
+                    <th scope="col" class="w-auto">Admin</th>
+                    <th scope="col" class="w-auto"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,8 +38,17 @@
                         {% endif %}
                     </td>
                     <td class="align-middle">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target='#edit{{ user.id }}'>
+                        <button type="button" class="btn btn-primary px-3" data-bs-toggle="modal" data-bs-target='#edit{{ user.id }}'>
                             Edit
+                        </button>
+                        <span class="px-1"></span>
+                        {% set form_id = "view-user" + user.id|string %}
+                        <form method="POST" class="visually-hidden" id={{ form_id }}>
+                            <input type="text" class="form-control visually-hidden" id="form_id" name="form_id" value={{ form_id }} readonly>
+                            <input type="text" class="form-control visually-hidden" id="user_id" name="user_id" value={{ user.id }} readonly>
+                        </form>
+                        <button type="submit" class="btn btn-success" form={{ form_id }}>
+                            View
                         </button>
                     </td>
                 </tr>
