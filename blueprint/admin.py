@@ -1,18 +1,24 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import (Blueprint, render_template, redirect, url_for, request,
+                   flash, abort)
 from flask_login import login_required, current_user
-from validation import validate_sign_up, validate_password
+from validation import validate_sign_up, convert_to_int
 import crud
 
 admin = Blueprint("admin", __name__)
 
-ALL_CATEGORIES = crud.get_training_categories()
+ALL_CATEGORIES = crud.ALL_CATEGORIES
+
+# TODO move this to validation?
+def check_admin(user):
+    if not user.admin:
+        abort(403)
+
 
 @admin.route("/users", methods=["GET", "POST"])
 @login_required
 def admin_users():
-    if not current_user.admin:
-        return render_template("error_pages/403.html"), 403
-    elif request.method == "POST":
+    check_admin(current_user)
+    if request.method == "POST":
         # If Add new user clicked
         if request.form.get("form_id") == "add-user":
             first_name = request.form.get("first_name")
@@ -21,10 +27,6 @@ def admin_users():
             password1 = request.form.get("password1")
             password2 = request.form.get("password2")
             is_admin = request.form.get("admin")
-            if is_admin == "True":
-                is_admin = True
-            else:
-                is_admin = False
             request.form.get("admin")
             error = validate_sign_up(
                 first_name, last_name, email, password1, password2
@@ -47,10 +49,6 @@ def admin_users():
             last_name = request.form.get("last_name")
             email = request.form.get("email").lower()
             is_admin = request.form.get("admin")
-            if is_admin == "True":
-                is_admin = True
-            else:
-                is_admin = False
             if current_user.id == user_id and is_admin != current_user.admin:
                 flash(message="You cannot remove admin from yourself",
                       category="error")
@@ -90,10 +88,10 @@ def admin_users():
 @admin.route("/training", methods=["GET", "POST"])
 @login_required
 def admin_training():
-    if not current_user.admin:
-        return render_template("error_pages/403.html"), 403
+    check_admin(current_user)
     user_id = request.args.get("user")
     if request.method == "POST":
+        # TODO Add delete
         # If post with edit form
         if request.form.get("form_id").startswith("edit"):
             # TODO Add validation
@@ -140,11 +138,37 @@ def admin_training():
                                all_categories=ALL_CATEGORIES)
 
 
-
 @admin.route("/category", methods=["GET", "POST"])
 @login_required
 def admin_categories():
-    if not current_user.admin:
-        return render_template("error_pages/403.html"), 403
-    return render_template("admin_category.html", user=current_user,
-                           all_categories=ALL_CATEGORIES)
+    check_admin(current_user)
+    category_id = request.args.get("id")
+    category_id = convert_to_int(category_id)
+    if not category_id:
+        abort(404)
+    category = crud.get_training_category(category_id)
+    if not category:
+        abort(404)
+    if request.method == "POST":
+        # TODO Add delete
+        if request.form.get("form_id").startswith("edit"):
+            # TODO Add validation
+            training_id = request.form.get("training_id")
+            course_name = request.form.get("course_name")
+            course_category = request.form.get("category")
+            date_completed = request.form.get("date_completed")
+            certification = request.form.get("certification")
+            crud.update_training(
+                training_id=training_id,
+                course_name=course_name,
+                course_category=course_category,
+                date_completed=date_completed,
+                certification=certification
+            )
+        return redirect(url_for("admin.admin_categories", id=category_id))
+    else:
+        training = crud.get_training_by_category(category_id)
+        return render_template("admin_category.html",
+                               category=category.category_name,
+                               training=training,
+                               all_categories=ALL_CATEGORIES)

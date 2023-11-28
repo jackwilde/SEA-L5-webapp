@@ -6,14 +6,75 @@
 
 {% block content %}
     <div class="container mt-5">
-        <h1 class="display-6 mb-3">
-            Training Categories
-        </h1>
-        <h2 class="fw-light fs-4 mb-3">
-            Click a category to view training logged under it.
-        </h2>
-        {% for category in all_categories %}
-            <h3 class="fw-semibold fs-4">{{ category.category_name }}</h3>
-        {% endfor %}
+            <h1 class="display-6 mb-3">
+                {{ category }} Training
+            </h1>
+            {% if training|length == 0 %}
+                <div class="container mt-5 w-75 text-center">
+                {% if user %}
+                    <h1 class="display-6">No training has been added for {{ category }}</h1>
+                {% else %}
+                    <h1 class="display-6">No training has been added by anyone!</h1>
+                {% endif %}
+            {% else %}
+                <table class="table table-striped shadow mt-3">
+                    <thead>
+                    <tr class="table-dark">
+                        {% if not user %}
+                            <th scope="col">Full Name</th>
+                        {% endif %}
+                        <th scope="col">Course Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Date Completed</th>
+                        <th scope="col">Certification</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for course in training %}
+                        <tr>
+                            {% if not user %}
+                                <td class="align-middle">{{ course.first_name }} {{ course.last_name }}</td>
+                            {% endif %}
+                            <td class="align-middle">{{ course.course_name }}</td>
+                            <td class="align-middle">{{ course.category_name }}</td>
+                            <td class="align-middle">{{ course.date_completed }}</td>
+                            <td class="fs-4 align-middle">
+                                {% if course.certification == True %}
+                                    &check;
+                                {% else %}
+                                    &cross;
+                                {% endif %}
+                            </td>
+                            <td class="align-middle">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target='#edit{{ course.id }}'>
+                                    Edit
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Modal -->
+                        <div class="modal modal-lg fade" id="edit{{ course.id }}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title display-6" id="ModalLabel">Edit Training</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body container p-5">
+                                        {% set form_id = "edit-course" + course.id|string %}
+                                        {% include "user_training_form.html" %}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" form="{{ form_id }}" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

@@ -34,6 +34,10 @@ def get_all_users():
 
 
 def create_user(first_name, last_name, email, password, admin=False):
+    if admin == "True" or True:
+        admin = True
+    else:
+        admin = False
     with Session() as s:
         password_hash = generate_password_hash(password, method="scrypt")
         user = User(first_name=first_name, last_name=last_name,
@@ -45,6 +49,10 @@ def create_user(first_name, last_name, email, password, admin=False):
 
 
 def update_user(user_id, first_name, last_name, email, admin,):
+    if admin == "True" or True:
+        admin = True
+    else:
+        admin = False
     s = Session()
     stmt = (update(User)
             .where(User.id == user_id)
@@ -79,6 +87,40 @@ def get_training_categories():
         ).order_by(TrainingCategory.category_name)
         training_categories = s.execute(stmt).all()
     return training_categories
+
+
+def get_training_category(category_id):
+    with (Session() as s):
+        stmt = select(
+            TrainingCategory.id,
+            TrainingCategory.category_name
+        ).where(TrainingCategory.id == category_id)
+        category = s.execute(stmt).first()
+    return category
+
+
+def get_training_by_category(category_id):
+    with Session() as s:
+        stmt = (
+            select(
+                Training.id,
+                User.id,
+                User.first_name,
+                User.last_name,
+                Training.course_name,
+                Training.category_id,
+                TrainingCategory.category_name,
+                Training.date_completed,
+                Training.certification
+            ).join(TrainingCategory)
+            .join(User)
+            .where(Training.category_id == category_id)
+            .order_by(Training.user_id)
+            .order_by(Training.course_name)
+        )
+        all_training = s.execute(stmt).all()
+
+    return all_training
 
 
 def create_training_category(training_category):
@@ -200,4 +242,5 @@ if not get_training_categories():
     for category in category_list:
         create_training_category(category)
 
-
+# Get all categories
+ALL_CATEGORIES = get_training_categories()

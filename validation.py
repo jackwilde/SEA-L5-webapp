@@ -52,3 +52,12 @@ def validate_password(email, password):
     if user:
         if check_password_hash(user.password, password):
             return user
+
+
+def convert_to_int(value):
+    if isinstance(value, int):
+        return value
+    elif isinstance(value, str) and value.isdigit():
+        return int(value)
+    else:
+        return None

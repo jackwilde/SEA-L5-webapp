@@ -39,7 +39,7 @@
                                         <ul class="dropdown-menu dropdown-submenu">
                                             {% for category in all_categories %}
                                             <li>
-                                                <a class="dropdown-item" href="#">{{ category.category_name }}</a>
+                                                <a class="dropdown-item" href="/admin/category?id={{ category.id }}">{{ category.category_name }}</a>
                                             </li>
                                             {% endfor %}
                                         </ul>
@@ -82,6 +82,5 @@
             {% block content %}
             {% endblock %}
         </div>
-
     </body>
 </html>
