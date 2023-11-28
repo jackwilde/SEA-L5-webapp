@@ -75,14 +75,8 @@ def admin_users():
             return redirect(url_for("admin.admin_users"))
         # If Add view user clicked
         elif request.form.get("form_id").startswith("view"):
-            user_id = int(request.form.get("user_id"))
+            user_id = request.form.get("user_id")
             return redirect(url_for("admin.admin_training", user=user_id))
-            # user = crud.get_user_by_id(user_id)
-            # user_training = crud.get_training_by_user(user)
-            # return render_template("training.html",
-            #                        training=user_training,
-            #                        all_categories=ALL_CATEGORIES,
-            #                        user=user)
         else:
             print(request.form.get("form_id"))
             return redirect(url_for("admin.admin_users"))
@@ -98,26 +92,53 @@ def admin_users():
 def admin_training():
     if not current_user.admin:
         return render_template("error_pages/403.html"), 403
-    elif request.method == "POST":
-        print(request.data)
-        return redirect(url_for("admin.admin_training"))
-    else:
-        user_id = request.args.get("user")
-        if not user_id:
-            print("No user specified")
-            all_training = crud.get_all_training()
-            return render_template("admin_training.html",
-                                   training=all_training,
-                                   all_categories=ALL_CATEGORIES)
+    user_id = request.args.get("user")
+    if request.method == "POST":
+        # If post with edit form
+        if request.form.get("form_id").startswith("edit"):
+            # TODO Add validation
+            training_id = request.form.get("training_id")
+            course_name = request.form.get("course_name")
+            course_category = request.form.get("category")
+            date_completed = request.form.get("date_completed")
+            certification = request.form.get("certification")
+            crud.update_training(
+                training_id=training_id,
+                course_name=course_name,
+                course_category=course_category,
+                date_completed=date_completed,
+                certification=certification
+            )
+        # If post with add user
+        elif request.form.get("form_id").startswith("add") and user_id:
+            # TODO Add validation
+            course_name = request.form.get("course_name")
+            course_category = request.form.get("category")
+            date_completed = request.form.get("date_completed")
+            certification = request.form.get("certification")
+            crud.create_training(user_id=user_id,
+                                 course_name=course_name,
+                                 course_category=course_category,
+                                 date_completed=date_completed,
+                                 certification=certification)
+        # Check whether to return all users or specific user
+        if user_id:
+            return redirect(url_for("admin.admin_training", user=user_id))
         else:
-            print(f"User {user_id} named")
-            user_id = int(user_id)
-            user = crud.get_user_by_id(user_id)
-            user_training = crud.get_training_by_user(user)
-            return render_template("admin_training.html",
-                                   training=user_training,
-                                   all_categories=ALL_CATEGORIES,
-                                   user=user)
+            return redirect(url_for("admin.admin_training"))
+    # If a user id set then show training for that user
+    elif user_id:
+        user_id = int(user_id)
+        user = crud.get_user_by_id(user_id)
+        user_training = crud.get_training_by_user(user)
+        return render_template("admin_training.html", training=user_training,
+                               all_categories=ALL_CATEGORIES, user=user)
+    # Otherwise show all training
+    else:
+        all_training = crud.get_all_training()
+        return render_template("admin_training.html", training=all_training,
+                               all_categories=ALL_CATEGORIES)
+
 
 
 @admin.route("/category", methods=["GET", "POST"])

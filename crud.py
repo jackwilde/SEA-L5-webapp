@@ -142,6 +142,10 @@ def get_training_by_user(user):
 
 def create_training(user_id, course_name, course_category, date_completed,
                     certification):
+    if certification == "True" or certification is True:
+        certification = True
+    else:
+        certification = False
     with Session() as s:
         training = Training(user_id=user_id,
                             course_name=course_name,
@@ -154,19 +158,21 @@ def create_training(user_id, course_name, course_category, date_completed,
     return 0
 
 
-def update_training(training_id, user_id, course_name, course_category,
+def update_training(training_id, course_name, course_category,
                     date_completed, certification):
-    s = Session()
-    stmt = (update(Training)
-            .where(Training.id == training_id)
-            .values(user_id=user_id,
-                    course_name=course_name,
-                    category_id=course_category,
-                    date_completed=date_completed,
-                    certification=certification))
-    s.execute(stmt)
-    s.commit()
-    s.close()
+    if certification == "True" or certification is True:
+        certification = True
+    else:
+        certification = False
+    with Session() as s:
+        stmt = (update(Training)
+                .where(Training.id == training_id)
+                .values(course_name=course_name,
+                        category_id=course_category,
+                        date_completed=date_completed,
+                        certification=certification))
+        s.execute(stmt)
+        s.commit()
     return 0
 
 

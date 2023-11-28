@@ -63,7 +63,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body container p-5">
-                                {% set form_id = course.id %}
+                                {% set form_id = "edit-course" + course.id|string %}
                                 {% include "user_training_form.html" %}
                             </div>
                             <div class="modal-footer">
@@ -78,25 +78,27 @@
         </table>
     {% endif %}
 <div class="container mt-4 text-center">
-    <button type="button" class="btn btn-primary btn-lg mx-1" data-bs-toggle="modal" data-bs-target='#add_new_training'>Add new training</button>
-    <div class="modal modal-lg fade" id="add_new_training" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title display-6" id="ModalLabel">Add New Training</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body container p-5">
-                    {% set form_id = "add_training" %}
-                    {% include "user_training_form.html" %}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" form="{{ form_id }}" class="btn btn-primary">Save changes</button>
+    {% if user %}
+        <button type="button" class="btn btn-primary btn-lg mx-1" data-bs-toggle="modal" data-bs-target='#add_new_training'>Add new training</button>
+        <div class="modal modal-lg fade" id="add_new_training" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title display-6" id="ModalLabel">Add New Training</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body container p-5">
+                        {% set form_id = "add_training" %}
+                        {% include "user_training_form.html" %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" form="{{ form_id }}" class="btn btn-primary">Save changes</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endif %}
 </div>
 </div>
 
