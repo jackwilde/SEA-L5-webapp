@@ -34,7 +34,7 @@ def get_all_users():
 
 
 def create_user(first_name, last_name, email, password, admin=False):
-    if admin == "True" or True:
+    if admin == "True" or admin is True:
         admin = True
     else:
         admin = False
@@ -49,7 +49,7 @@ def create_user(first_name, last_name, email, password, admin=False):
 
 
 def update_user(user_id, first_name, last_name, email, admin,):
-    if admin == "True" or True:
+    if admin == "True" or admin is True:
         admin = True
     else:
         admin = False
