@@ -22,6 +22,7 @@ class User(Base, UserMixin):
     def __repr__(self):
         return str(self.id)
 
+
 class TrainingCategory(Base):
     __tablename__ = 'training_categories'
 
@@ -29,6 +30,7 @@ class TrainingCategory(Base):
     category_name = mapped_column(String, unique=True, index=True)
 
     trainings = relationship('Training', back_populates='category')
+
 
 class Training(Base):
     __tablename__ = 'training'

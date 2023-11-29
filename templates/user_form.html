@@ -3,34 +3,39 @@
     <input type="text" class="form-control visually-hidden" id="form_id" name="form_id" value={{ form_id }} readonly>
     {% if user %}
         <label for="user_id" class="visually-hidden">user_id</label>
-        <input type="text" class="form-control visually-hidden" id="user_id" name="user_id" value={{ user.id }} readonly>
+        <input type="text" class="form-control visually-hidden" id="user_id" name="user_id"
+               value={{ user.id }} readonly>
     {% endif %}
     <div class="row mb-3">
         <label for="first_name" class="col-sm-2 col-form-label fw-semibold fs-6 text-left">First Name</label>
-        <input type="text" class="form-control col" id="first_name" name="first_name" {% if user %}value="{{ user.first_name }}"{% endif %} placeholder="First Name">
+        <input type="text" class="form-control col" id="first_name" name="first_name"
+               {% if user %}value="{{ user.first_name }}"{% endif %} placeholder="First Name" required>
         <label for="last_name" class="col-sm-2 col-form-label fw-semibold fs-6 text-left">Last Name</label>
-        <input type="text" class="form-control col" id="last_name" name="last_name" {% if user %}value="{{ user.last_name }}"{% endif %} placeholder="Last Name">
+        <input type="text" class="form-control col" id="last_name" name="last_name"
+               {% if user %}value="{{ user.last_name }}"{% endif %} placeholder="Last Name" required>
     </div>
     <div class="row mb-3">
         <label for="email" class="col-sm-2 col-form-label fw-semibold fs-6 text-left">Email</label>
-        <input type="email" class="form-control col" id="email" name="email" {% if user %}value="{{ user.email }}"{% endif %} placeholder="info@example.com">
+        <input type="email" class="form-control col" id="email" name="email"
+               {% if user %}value="{{ user.email }}"{% endif %} placeholder="info@example.com" required>
     </div>
     {% if not user %}
         <div class="row mb-3">
-        <label for="password1" class="col-sm-2 col-form-label fw-semibold fs-6 text-left">Password</label>
+            <label for="password1" class="col-sm-2 col-form-label fw-semibold fs-6 text-left">Password</label>
             <input type="password" class="form-control sign-up col" id="password1" name="password1"
-                   placeholder="Password">
+                   placeholder="Password" required>
         </div>
         <div class="row mb-3">
             <label for="password2" class="col-sm-2 col-form-label fw-semibold fs-6 text-left">Confirm</label>
             <input type="password" class="form-control sign-up col" id="password2" name="password2"
-                   placeholder="Password">
+                   placeholder="Password" required>
         </div>
     {% endif %}
     {% if current_user.admin == True %}
         <div class="row mb-3">
             <label class="form-check-label col-2 col-form-label fw-semibold fs-6" for="admin">Admin</label>
-            <input class="form-check-input fs-4" type="checkbox" value="True" id="admin" name="admin" {% if user and user.admin == True %}checked{% endif %}>
+            <input class="form-check-input fs-4" type="checkbox" value="True" id="admin" name="admin"
+                   {% if user and user.admin == True %}checked{% endif %}>
         </div>
     {% endif %}
 </form>

@@ -38,8 +38,8 @@ def create_user(first_name, last_name, email, password, admin=False):
         admin = True
     else:
         admin = False
+    password_hash = generate_password_hash(password, method="scrypt")
     with Session() as s:
-        password_hash = generate_password_hash(password, method="scrypt")
         user = User(first_name=first_name, last_name=last_name,
                     email=email, password=password_hash, admin=admin)
         s.add(user)
@@ -95,8 +95,8 @@ def get_training_category(category_id):
             TrainingCategory.id,
             TrainingCategory.category_name
         ).where(TrainingCategory.id == category_id)
-        category = s.execute(stmt).first()
-    return category
+        training_category = s.execute(stmt).first()
+    return training_category
 
 
 def get_training_by_category(category_id):
@@ -125,10 +125,10 @@ def get_training_by_category(category_id):
 
 def create_training_category(training_category):
     with Session() as s:
-        category = TrainingCategory(category_name=training_category)
-        s.add(category)
+        training_category = TrainingCategory(category_name=training_category)
+        s.add(training_category)
         s.commit()
-        s.refresh(category)
+        s.refresh(training_category)
     return 0
 
 

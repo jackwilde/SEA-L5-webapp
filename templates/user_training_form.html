@@ -1,29 +1,35 @@
-    <form method="POST" class="mb-4" id={{ form_id }}>
-        <label for="form_id" class="visually-hidden">Form ID</label>
-        <input type="text" class="form-control visually-hidden" id="form_id" name="form_id" value={{ form_id }} readonly>
-        {% if course %}
-            <label for="training_id" class="visually-hidden">Course ID</label>
-            <input type="text" class="form-control visually-hidden" id="training_id" name="training_id" value={{ course.id }} readonly>
-        {% endif %}
-        <div class="row mb-3">
-            <label for="course_name" class="col-sm-3 col-form-label fw-semibold fs-6 text-left">Course name</label>
-            <input type="text" class="form-control col" id="course_name" name="course_name" {% if course %}value="{{ course.course_name }}"{% endif %} placeholder="Course name">
-        </div>
-        <div class="row mb-3">
-            <label for="category" class="col-sm-3 col-form-label fw-semibold fs-6 text-left">Category</label>
-            <select class="form-select form-select-lg fs-6 col" name="category" id="category">
-                {% if not course %}
-                    <option selected>Select category</option>
-                {% endif %}
-                {% for category in all_categories %}
-                    <option value={{ category.id }} {% if course and course.category_id == category.id %}selected{% endif %}>{{ category.category_name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="row mb-3">
-            <label for="date_completed" class="col-sm-3 col-form-label fw-semibold fs-6 text-left">Date completed</label>
-            <input type="date" class="form-control sign-up col-sm" id="date_completed" name="date_completed" {% if course %}value="{{ course.date_completed }}"{% endif %}>
-            <label class="form-check-label col-5 col-form-label fw-semibold fs-6" for="certification">Certification</label>
-            <input class="form-check-input fs-4" type="checkbox" value="True" id="certification" name="certification" {% if course and course.certification == True %}checked{% endif %}>
-        </div>
-    </form>
+<form method="POST" class="mb-4" id={{ form_id }}>
+    <label for="form_id" class="visually-hidden">Form ID</label>
+    <input type="text" class="form-control visually-hidden" id="form_id" name="form_id" value={{ form_id }} readonly>
+    {% if course %}
+        <label for="training_id" class="visually-hidden">Course ID</label>
+        <input type="text" class="form-control visually-hidden" id="training_id" name="training_id"
+               value={{ course.id }} readonly>
+    {% endif %}
+    <div class="row mb-3">
+        <label for="course_name" class="col-sm-3 col-form-label fw-semibold fs-6 text-left">Course name</label>
+        <input type="text" class="form-control col" id="course_name" name="course_name"
+               {% if course %}value="{{ course.course_name }}"{% endif %} placeholder="Course name" required>
+    </div>
+    <div class="row mb-3">
+        <label for="category" class="col-sm-3 col-form-label fw-semibold fs-6 text-left">Category</label>
+        <select class="form-select form-select-lg fs-6 col" name="category" id="category" required>
+            {% if not course %}
+                <option selected value="">None</option>
+            {% endif %}
+            {% for category in all_categories %}
+                <option value={{ category.id }} {% if course and course.category_id == category.id %}selected{% endif %}>
+                    {{ category.category_name }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="row mb-3">
+        <label for="date_completed" class="col-sm-3 col-form-label fw-semibold fs-6 text-left">Date completed</label>
+        <input type="date" class="form-control sign-up col-sm" id="date_completed" name="date_completed"
+               {% if course %}value="{{ course.date_completed }}"{% endif %} required>
+        <label class="form-check-label col-5 col-form-label fw-semibold fs-6" for="certification">Certification</label>
+        <input class="form-check-input fs-4" type="checkbox" value="True" id="certification" name="certification"
+               {% if course and course.certification == True %}checked{% endif %}>
+    </div>
+</form>
