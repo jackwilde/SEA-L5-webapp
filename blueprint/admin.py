@@ -1,7 +1,7 @@
 from flask import (Blueprint, render_template, redirect, url_for, request,
                    flash, abort)
 from flask_login import login_required, current_user
-from validation import validate_sign_up, convert_to_int
+from validation import validate_sign_up, convert_to_int, check_date_is_past
 import crud
 
 admin = Blueprint("admin", __name__)
@@ -100,13 +100,17 @@ def admin_training():
             course_category = request.form.get("category")
             date_completed = request.form.get("date_completed")
             certification = request.form.get("certification")
-            crud.update_training(
-                training_id=training_id,
-                course_name=course_name,
-                course_category=course_category,
-                date_completed=date_completed,
-                certification=certification
-            )
+            error = check_date_is_past(date_completed)
+            if error:
+                flash(message=error, category="error")
+            else:
+                crud.update_training(
+                    training_id=training_id,
+                    course_name=course_name,
+                    course_category=course_category,
+                    date_completed=date_completed,
+                    certification=certification
+                )
         # If post with add user
         elif request.form.get("form_id").startswith("add") and user_id:
             # TODO Add validation
@@ -114,11 +118,15 @@ def admin_training():
             course_category = request.form.get("category")
             date_completed = request.form.get("date_completed")
             certification = request.form.get("certification")
-            crud.create_training(user_id=user_id,
-                                 course_name=course_name,
-                                 course_category=course_category,
-                                 date_completed=date_completed,
-                                 certification=certification)
+            error = check_date_is_past(date_completed)
+            if error:
+                flash(message=error, category="error")
+            else:
+                crud.create_training(user_id=user_id,
+                                     course_name=course_name,
+                                     course_category=course_category,
+                                     date_completed=date_completed,
+                                     certification=certification)
         # Check whether to return all users or specific user
         if user_id:
             return redirect(url_for("admin.admin_training", user=user_id))
@@ -158,13 +166,17 @@ def admin_categories():
             course_category = request.form.get("category")
             date_completed = request.form.get("date_completed")
             certification = request.form.get("certification")
-            crud.update_training(
-                training_id=training_id,
-                course_name=course_name,
-                course_category=course_category,
-                date_completed=date_completed,
-                certification=certification
-            )
+            error = check_date_is_past(date_completed)
+            if error:
+                flash(message=error, category="error")
+            else:
+                crud.update_training(
+                    training_id=training_id,
+                    course_name=course_name,
+                    course_category=course_category,
+                    date_completed=date_completed,
+                    certification=certification
+                )
         return redirect(url_for("admin.admin_categories", id=category_id))
     else:
         training = crud.get_training_by_category(category_id)

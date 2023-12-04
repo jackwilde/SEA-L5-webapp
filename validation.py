@@ -1,5 +1,6 @@
 import re
 from werkzeug.security import check_password_hash
+from datetime import date, datetime
 import crud
 
 
@@ -85,3 +86,16 @@ def convert_to_int(value):
         return int(value)
     else:
         return None
+
+
+def check_date_is_past(date_to_check):
+    if isinstance(date_to_check, str):
+        converted_date = datetime.strptime(date_to_check, "%Y-%m-%d").date()
+        if converted_date <= date.today():
+            return None
+        else:
+            message = "Date completed cannot be in the future"
+            return message
+    else:
+        message = "Date format is invalid"
+        return message
