@@ -8,6 +8,7 @@ admin = Blueprint("admin", __name__)
 
 ALL_CATEGORIES = crud.ALL_CATEGORIES
 
+
 # TODO move this to validation?
 def check_admin(user):
     if not user.admin:
