@@ -20,6 +20,7 @@ def check_password_strength(password):
         return ("Passwords must be at least 8 characters long and contain at "
                 "least 1 letter, 1 number, 1 special character and no spaces.")
 
+
 def check_invalid_spaces(check_string):
     start_end_spaces_pattern = r"^\s|\s$"
     if not check_string:
@@ -51,7 +52,7 @@ def validate_sign_up(first_name, last_name, email, password1, password2):
     user = crud.get_user_by_email(email=email)
     if user:
         message = f"Account already exists for {email}"
-    elif not check_name(first_name, 60):
+    elif not check_name(first_name):
         message = "First name is invalid"
     elif not last_name:
         message = "Last name is invalid"

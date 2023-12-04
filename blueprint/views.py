@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, render_template, redirect, url_for, request, abort
 from flask_login import login_required, current_user
 import crud
 
@@ -39,14 +39,13 @@ def training():
             training_record = crud.get_training_by_id(training_id)
             if training_record.user_id == current_user.id:
                 crud.update_training(training_id=training_id,
-                                     user_id=current_user.id,
                                      course_name=course_name,
                                      course_category=course_category,
                                      date_completed=date_completed,
                                      certification=certification)
                 return redirect(url_for("views.training"))
             else:
-                return render_template("error_pages/403.html"), 403
+                return abort(403)
     else:
         user_training = crud.get_training_by_user(current_user)
         return render_template("training.html",
