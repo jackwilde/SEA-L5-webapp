@@ -24,52 +24,51 @@ def check_password_strength(password):
 
 def check_invalid_spaces(check_string):
     start_end_spaces_pattern = r"^\s|\s$"
-    if not check_string:
-        return "empty"
-    elif re.match(start_end_spaces_pattern, check_string):
+    if re.match(start_end_spaces_pattern, check_string):
         return "contains invalid whitespace"
     else:
         return None
 
 
 def check_name(name):
-    result = check_invalid_spaces(name)
-    if result:
-        return result
+    error = check_invalid_spaces(name)
+    if error:
+        return error
     else:
         # Check name only contains alpha characters and spaces
         name_regex = r"^[a-zA-Z\s]*$"
-        if not re.match(name_regex, name):
-            return None
-        else:
+        if re.match(name_regex, name):
             return "contains invalid characters"
+        else:
+            return None
 
 
 def validate_sign_up(first_name, last_name, email, password1, password2):
     """Will return an error message if an error is found else
     returns None"""
     message = None
-    # Check if user exists and then validate input
+    # Check if user exists
     user = crud.get_user_by_email(email=email)
     if user:
-        message = f"Account already exists for {email}"
-    elif not check_name(first_name):
-        message = "First name is invalid"
-    elif not last_name:
-        message = "Last name is invalid"
-    elif not validate_email(email):
-        message = "Email address format is invalid"
-    elif password1 != password2:
-        message = "Passwords do not match"
-    elif not check_password_strength(password1):
-        message = \
-            ("Passwords must be at least 8 characters long and contain at "
-             "least 1 letter, 1 number, 1 special character and no spaces.")
-
-    if message:
-        return message
-    else:
-        return None
+        return f"Account already exists for {email}"
+    # Validate first name
+    error = check_name(first_name)
+    if error:
+        return f"First name {error}"
+    # Validate last name
+    error = check_name(last_name)
+    if error:
+        return f"Last name {error}"
+    # Validate email
+    if not validate_email(email):
+        return "Email address format is invalid"
+    if password1 != password2:
+        return "Passwords do not match"
+    if not check_password_strength(password1):
+        return ("Passwords must be at least 8 characters long and contain at "
+                "least 1 letter, 1 number, 1 special character and no spaces.")
+    # If all validation passes return 0
+    return 0
 
 
 def validate_password(email, password):
