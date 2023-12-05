@@ -102,7 +102,8 @@ def admin_training():
     check_admin(current_user)
     user_id = request.args.get("user")
     if request.method == "POST":
-        # TODO Add delete
+        if request.form.get("form_id").startswith("delete"):
+            crud.delete_training(request.form.get("training_id"))
         # If post with edit form
         if request.form.get("form_id").startswith("edit"):
             training_id = request.form.get("training_id")
@@ -175,7 +176,9 @@ def admin_categories():
     if not category:
         abort(404)
     if request.method == "POST":
-        # TODO Add delete
+        # Delete training
+        if request.form.get("form_id").startswith("delete"):
+            crud.delete_training(request.form.get("training_id"))
         if request.form.get("form_id").startswith("edit"):
             training_id = request.form.get("training_id")
             course_name = request.form.get("course_name")

@@ -218,6 +218,13 @@ def update_training(training_id, course_name, course_category,
     return 0
 
 
+def delete_training(training_id):
+    with Session() as s:
+        stmt = delete(Training).where(Training.id == training_id)
+        s.execute(stmt)
+        s.commit()
+    return 0
+
 # If no users create first admin
 if not get_all_users():
     create_user(
