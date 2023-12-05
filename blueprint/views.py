@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, redirect, url_for, request, abort, flash
+from flask import (Blueprint, render_template, redirect, url_for, request,
+                   abort, flash)
 from flask_login import login_required, current_user
 import crud
-from validation import check_date_is_past
+from validation import validate_training
 
 views = Blueprint("views", __name__)
 
@@ -15,10 +16,13 @@ def training():
             course_category = request.form.get("category")
             date_completed = request.form.get("date_completed")
             certification = request.form.get("certification")
-            # TODO Add validation
-            error = check_date_is_past(date_completed)
-            if error:
-                flash(message=error, category="error")
+            # Validate training form
+            result = validate_training(
+                course_name=course_name,
+                date_completed=date_completed
+            )
+            if result != 0:
+                flash(message=result, category="error")
             else:
                 crud.create_training(user_id=current_user.id,
                                      course_name=course_name,
@@ -35,10 +39,13 @@ def training():
             # Check existing training record belongs to current user
             training_record = crud.get_training_by_id(training_id)
             if training_record.user_id == current_user.id:
-                # TODO Add validation
-                error = check_date_is_past(date_completed)
-                if error:
-                    flash(message=error, category="error")
+                # Validate training form
+                result = validate_training(
+                    course_name=course_name,
+                    date_completed=date_completed
+                )
+                if result != 0:
+                    flash(message=result, category="error")
                 else:
                     crud.update_training(training_id=training_id,
                                          course_name=course_name,

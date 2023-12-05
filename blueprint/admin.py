@@ -1,7 +1,8 @@
 from flask import (Blueprint, render_template, redirect, url_for, request,
                    flash, abort)
 from flask_login import login_required, current_user
-from validation import validate_sign_up, convert_to_int, check_date_is_past, validate_user_info
+from validation import (validate_sign_up, convert_to_int, check_date_is_past,
+                        validate_user_info, validate_training)
 import crud
 
 admin = Blueprint("admin", __name__)
@@ -9,7 +10,6 @@ admin = Blueprint("admin", __name__)
 ALL_CATEGORIES = crud.ALL_CATEGORIES
 
 
-# TODO move this to validation?
 def check_admin(user):
     if not user.admin:
         abort(403)
@@ -105,15 +105,18 @@ def admin_training():
         # TODO Add delete
         # If post with edit form
         if request.form.get("form_id").startswith("edit"):
-            # TODO Add validation
             training_id = request.form.get("training_id")
             course_name = request.form.get("course_name")
             course_category = request.form.get("category")
             date_completed = request.form.get("date_completed")
             certification = request.form.get("certification")
-            error = check_date_is_past(date_completed)
-            if error:
-                flash(message=error, category="error")
+            # Validate training form
+            result = validate_training(
+                course_name=course_name,
+                date_completed=date_completed
+            )
+            if result != 0:
+                flash(message=result, category="error")
             else:
                 crud.update_training(
                     training_id=training_id,
@@ -124,14 +127,17 @@ def admin_training():
                 )
         # If post with add user
         elif request.form.get("form_id").startswith("add") and user_id:
-            # TODO Add validation
             course_name = request.form.get("course_name")
             course_category = request.form.get("category")
             date_completed = request.form.get("date_completed")
             certification = request.form.get("certification")
-            error = check_date_is_past(date_completed)
-            if error:
-                flash(message=error, category="error")
+            # Validate training form
+            result = validate_training(
+                course_name=course_name,
+                date_completed=date_completed
+            )
+            if result != 0:
+                flash(message=result, category="error")
             else:
                 crud.create_training(user_id=user_id,
                                      course_name=course_name,
@@ -171,15 +177,18 @@ def admin_categories():
     if request.method == "POST":
         # TODO Add delete
         if request.form.get("form_id").startswith("edit"):
-            # TODO Add validation
             training_id = request.form.get("training_id")
             course_name = request.form.get("course_name")
             course_category = request.form.get("category")
             date_completed = request.form.get("date_completed")
             certification = request.form.get("certification")
-            error = check_date_is_past(date_completed)
-            if error:
-                flash(message=error, category="error")
+            # Validate training form
+            result = validate_training(
+                course_name=course_name,
+                date_completed=date_completed
+            )
+            if result != 0:
+                flash(message=result, category="error")
             else:
                 crud.update_training(
                     training_id=training_id,

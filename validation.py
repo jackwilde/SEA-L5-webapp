@@ -5,6 +5,9 @@ import crud
 
 
 def validate_email(email):
+    email_length_limit = 120
+    if len(email) > email_length_limit:
+        return f"must be {email_length_limit} characters or less"
     error = check_invalid_spaces(email)
     if error:
         return "contains invalid whitespace"
@@ -29,12 +32,15 @@ def check_password_strength(password):
 def check_invalid_spaces(check_string):
     start_end_spaces_pattern = r"^\s|\s$"
     if re.match(start_end_spaces_pattern, check_string):
-        return "contains invalid whitespace"
+        return "contains whitespace at start or end"
     else:
         return None
 
 
 def check_name(name):
+    name_length_limit = 25
+    if len(name) > name_length_limit:
+        return f"must be {name_length_limit} characters or less"
     error = check_invalid_spaces(name)
     if error:
         return error
@@ -109,8 +115,21 @@ def check_date_is_past(date_to_check):
         if converted_date <= date.today():
             return None
         else:
-            message = "Date completed cannot be in the future"
+            message = "cannot be in the future"
             return message
     else:
-        message = "Date format is invalid"
+        message = "format is invalid"
         return message
+
+
+def validate_training(course_name, date_completed):
+    course_name_limit = 50
+    if len(course_name) > course_name_limit:
+        return f"Course name must be {course_name_limit} characters or less"
+    error = check_invalid_spaces(course_name)
+    if error:
+        return f"Course name {error}"
+    error = check_date_is_past(date_completed)
+    if error:
+        return f"Date completed {error}"
+    return 0
