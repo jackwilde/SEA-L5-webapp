@@ -1,7 +1,7 @@
 from flask import (Blueprint, render_template, redirect, url_for, request,
                    flash, abort)
 from flask_login import login_required, current_user
-from validation import validate_sign_up, convert_to_int, check_date_is_past
+from validation import validate_sign_up, convert_to_int, check_date_is_past, validate_user_info
 import crud
 
 admin = Blueprint("admin", __name__)
@@ -29,11 +29,11 @@ def admin_users():
             password2 = request.form.get("password2")
             is_admin = request.form.get("admin")
             request.form.get("admin")
-            error = validate_sign_up(
+            result = validate_sign_up(
                 first_name, last_name, email, password1, password2
             )
-            if error:
-                flash(message=error, category="error")
+            if result != 0:
+                flash(message=result, category="error")
             else:
                 crud.create_user(
                     first_name=first_name,
@@ -55,6 +55,16 @@ def admin_users():
                       category="error")
                 return redirect(url_for("admin.admin_users"))
             else:
+                result = validate_user_info(
+                    user_id=user_id,
+                    first_name=first_name,
+                    last_name=last_name,
+                    email=email
+                )
+                if result != 0:
+                    flash(message=result,
+                          category="error")
+                    return redirect(url_for("admin.admin_users"))
                 crud.update_user(
                     user_id=user_id,
                     first_name=first_name,

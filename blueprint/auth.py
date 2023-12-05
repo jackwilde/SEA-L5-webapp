@@ -47,10 +47,10 @@ def create_account():
         password1 = request.form.get("password1")
         password2 = request.form.get("password2")
 
-        error = validate_sign_up(first_name, last_name, email, password1,
-                                 password2)
-        if error:
-            flash(message=error, category="error")
+        result = validate_sign_up(first_name, last_name, email, password1,
+                                  password2)
+        if result != 0:
+            flash(message=result, category="error")
         else:
             user = crud.create_user(first_name=first_name, last_name=last_name,
                                     email=email, password=password1)

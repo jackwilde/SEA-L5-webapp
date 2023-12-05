@@ -5,11 +5,15 @@ import crud
 
 
 def validate_email(email):
-    email_match_pattern = r"^\S+@\S+\.\S+$"
+    error = check_invalid_spaces(email)
+    if error:
+        return "contains invalid whitespace"
+    email_match_pattern = \
+        r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
     if re.match(email_match_pattern, email):
-        return True
+        return None
     else:
-        return False
+        return "format is invalid"
 
 
 def check_password_strength(password):
@@ -37,20 +41,21 @@ def check_name(name):
     else:
         # Check name only contains alpha characters and spaces
         name_regex = r"^[a-zA-Z\s]*$"
-        if re.match(name_regex, name):
+        if not re.match(name_regex, name):
             return "contains invalid characters"
         else:
             return None
 
 
-def validate_sign_up(first_name, last_name, email, password1, password2):
+def validate_user_info(first_name, last_name, email, user_id=None):
     """Will return an error message if an error is found else
     returns None"""
-    message = None
     # Check if user exists
     user = crud.get_user_by_email(email=email)
     if user:
-        return f"Account already exists for {email}"
+        # Check if the user found does not match the user id
+        if user.id != user_id:
+            return f"Account already exists for {email}"
     # Validate first name
     error = check_name(first_name)
     if error:
@@ -60,8 +65,19 @@ def validate_sign_up(first_name, last_name, email, password1, password2):
     if error:
         return f"Last name {error}"
     # Validate email
-    if not validate_email(email):
-        return "Email address format is invalid"
+    error = validate_email(email)
+    if error:
+        return f"Email address {error}"
+    # If all validation passes return 0
+    return 0
+
+
+def validate_sign_up(first_name, last_name, email, password1, password2):
+    """Will return an error message if an error is found else
+    returns None"""
+    result = validate_user_info(first_name, last_name, email)
+    if result != 0:
+        return result
     if password1 != password2:
         return "Passwords do not match"
     if not check_password_strength(password1):
