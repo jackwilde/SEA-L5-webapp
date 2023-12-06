@@ -1,8 +1,9 @@
 # myTraining
 
-### About
+## About
 myTraining is an application designed for users to log it training they have completed and allows managers to review the training their staff have logged.
 
+## Getting started
 ### Python requirements
 The application supports Python 3.11 and the required packages are listed in [requirements.txt](./requirements.txt)
 
