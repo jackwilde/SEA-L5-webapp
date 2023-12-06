@@ -19,8 +19,10 @@ def load_user(user_id):
 
 @auth.route("/sign-in", methods=["GET", "POST"])
 def sign_in():
+    # Redirect user if already signed in
     if current_user.is_authenticated:
         return redirect(url_for("views.training"))
+    # Sign in user
     elif request.method == "POST":
         email = request.form.get("email").lower()
         password = request.form.get("password")
@@ -32,14 +34,17 @@ def sign_in():
         else:
             flash(message="Email or password incorrect", category="error")
         return render_template("sign-in.html")
+    # Load sign in page
     else:
         return render_template("sign-in.html", user=current_user)
 
 
 @auth.route("/sign-up", methods=["GET", "POST"])
 def create_account():
+    # Redirect user if already signed in
     if current_user.is_authenticated:
         return redirect(url_for("views.training"))
+    # Attempt to sign up user
     if request.method == "POST":
         first_name = request.form.get("first_name")
         last_name = request.form.get("last_name")
@@ -57,7 +62,7 @@ def create_account():
             login_user(user, remember=True)
 
             return redirect(url_for("views.training"))
-
+    # Load sign up page
     return render_template("sign-up.html")
 
 

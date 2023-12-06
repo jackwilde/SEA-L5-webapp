@@ -1,8 +1,8 @@
 from flask import (Blueprint, render_template, redirect, url_for, request,
                    flash, abort)
 from flask_login import login_required, current_user
-from validation import (validate_sign_up, convert_to_int, check_date_is_past,
-                        validate_user_info, validate_training)
+from validation import (validate_sign_up, convert_to_int, validate_user_info,
+                        validate_training)
 import crud
 
 admin = Blueprint("admin", __name__)
@@ -11,6 +11,11 @@ ALL_CATEGORIES = crud.ALL_CATEGORIES
 
 
 def check_admin(user):
+    """
+    Check if user is admin and return a 403 error if not
+    :param user: User object to check
+    :return: 403 Error if user is not admin
+    """
     if not user.admin:
         abort(403)
 
@@ -18,6 +23,7 @@ def check_admin(user):
 @admin.route("/users", methods=["GET", "POST"])
 @login_required
 def admin_users():
+    # 403 Error if user is not admin
     check_admin(current_user)
     if request.method == "POST":
         # If Add new user clicked
@@ -43,7 +49,7 @@ def admin_users():
                     admin=is_admin
                 )
             return redirect(url_for("admin.admin_users"))
-        # If Add edit user clicked
+        # Add edit user clicked
         elif request.form.get("form_id").startswith("edit"):
             user_id = int(request.form.get("user_id"))
             first_name = request.form.get("first_name")
@@ -99,6 +105,7 @@ def admin_users():
 @admin.route("/training", methods=["GET", "POST"])
 @login_required
 def admin_training():
+    # 403 Error if user is not admin
     check_admin(current_user)
     user_id = request.args.get("user")
     if request.method == "POST":
@@ -167,6 +174,7 @@ def admin_training():
 @admin.route("/category", methods=["GET", "POST"])
 @login_required
 def admin_categories():
+    # 403 Error if user is not admin
     check_admin(current_user)
     category_id = request.args.get("id")
     category_id = convert_to_int(category_id)
@@ -176,9 +184,10 @@ def admin_categories():
     if not category:
         abort(404)
     if request.method == "POST":
-        # Delete training
+        # If post is delete training
         if request.form.get("form_id").startswith("delete"):
             crud.delete_training(request.form.get("training_id"))
+        # If post is edit training
         if request.form.get("form_id").startswith("edit"):
             training_id = request.form.get("training_id")
             course_name = request.form.get("course_name")

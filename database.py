@@ -3,6 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from models import Base
 from os import getenv
 
+# Get database settings from ENV
 DB_USER = getenv("DB_USER")
 DB_PASSWORD = getenv("DB_PASSWORD")
 DB_HOST = getenv("DB_HOST")

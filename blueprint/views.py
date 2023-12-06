@@ -11,6 +11,7 @@ views = Blueprint("views", __name__)
 @login_required
 def training():
     if request.method == "POST":
+        # Add new training
         if request.form.get("form_id") == "add_training":
             course_name = request.form.get("course_name")
             course_category = request.form.get("category")
@@ -30,6 +31,7 @@ def training():
                                      date_completed=date_completed,
                                      certification=certification)
             return redirect(url_for("views.training"))
+        # Edit existing training record
         else:
             course_name = request.form.get("course_name")
             course_category = request.form.get("category")
@@ -55,6 +57,7 @@ def training():
                 return redirect(url_for("views.training"))
             else:
                 return abort(403)
+    # Display all training for logged-in user
     else:
         user_training = crud.get_training_by_user(current_user)
         return render_template("training.html",
