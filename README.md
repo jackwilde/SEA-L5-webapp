@@ -1,17 +1,21 @@
 # myTraining
 
 ## About
-myTraining is an application designed for users to log it training they have completed and allows managers to review the training their staff have logged.
+myTraining is a Python based web application using the Flask framework. It provides a platform for users to log any IT
+based training that they have completed. 
 
 ## Getting started
-### Python requirements
-The application supports Python 3.11 and the required packages are listed in [requirements.txt](./requirements.txt)
+### Python Setup
+The application is written and tested with Python 3.11 and the packages required to run it are listed in the
+[requirements.txt](./requirements.txt) file.
 
-### Additional Requirements
-In order to run the application a connection to a postgres database is required.
+### Database
+A PostgreSQL database is required for this application to store its data. A database should be created on the PostgreSQL
+server along with a database user who can perform all CRUD actions within that database. The database connection
+settings are read by the application from system environment variables.
 
 ### Environment
-Several environment variables are required for the application to run.
+The following environment variables are required in order to run the application.
 
 | Environment Variable | Description                                                              |
 |----------------------|--------------------------------------------------------------------------|
@@ -23,3 +27,30 @@ Several environment variables are required for the application to run.
 | DB_USER              | Username of user with permission to connect to database.                 |
 | DB_PASSWORD          | Password for the database user                                           |
 | DB_NAME              | The name of the database within Postgres to store application data       |
+
+
+### Run the application
+A Web Server Gateway Interface (WSGI) is required to run Flask applications and so should also be installed on the
+server hosting the myTraining application.
+
+## Using the application
+### Roles
+The myTraining application has two roles
+* Standard
+* Admin
+
+During the first launch the application will create an admin user from the details set via environment variables. This
+admin user can then be used to promote other users to the admin role. Otherwise all users who create an account via the
+sign up page will become standard users.
+
+### Standard Users
+Standard users are able to log into the application to log any training they have completed. They are also permitted to
+view and update any of their own training.
+
+### Admin Users
+Admin users can use the same function as standard users but will also have access to admin functions that will allow
+them to do the following actions:
+* Create, read, update, and delete users
+* Create, read, update, and delete training
+* View training logged for a given user
+* View training logged for a given category
