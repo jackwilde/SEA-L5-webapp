@@ -47,7 +47,7 @@ def get_all_users():
     return all_users
 
 
-def create_user(first_name, last_name, email, password, admin):
+def create_user(first_name, last_name, email, password, admin=False):
     """
     Add a new user in the database.
     :param first_name: User's first name
