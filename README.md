@@ -48,7 +48,7 @@ Standard users are able to log into the application to log any training they hav
 view and update any of their own training.
 
 ### Admin Users
-Admin users can use the same function as standard users but will also have access to admin functions that will allow
+Admin users can use the same functions as standard users but will also have access to admin functions. These will allow
 them to do the following actions:
 * Create, read, update, and delete users
 * Create, read, update, and delete training
